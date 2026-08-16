@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment & secrets
+.env
+.env.*
+
+# Runtime data
+data/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Docs & scripts
+*.md
+deploy.sh
+LICENSE
+
+# Model cache (will be downloaded at runtime)
+*.bin
+*.safetensors
+*.gguf

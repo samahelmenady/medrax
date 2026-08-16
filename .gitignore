@@ -1,0 +1,63 @@
+# ===========================
+# Environment & Secrets
+# ===========================
+.env
+.env.*
+!.env.example
+
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ===========================
+# Virtual Environment
+# ===========================
+.venv/
+venv/
+ENV/
+
+# ===========================
+# Runtime Data
+# ===========================
+data/uploads/
+data/reports/
+
+# ===========================
+# Model Cache
+# ===========================
+*.bin
+*.safetensors
+*.gguf
+.cache/
+huggingface/
+
+# ===========================
+# IDE & OS
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Docker
+# ===========================
+*.log
+docker-compose.override.yml
+
+# ===========================
+# Misc
+# ===========================
+*.bak
+*.tmp
