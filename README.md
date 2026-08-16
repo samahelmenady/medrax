@@ -49,42 +49,6 @@ The project combines medical image understanding, multimodal AI, Retrieval-Augme
 
 ---
 
-# 📂 Project Structure
-
-```text
-MedRAX/
-│
-├── backend/
-│   ├── api/
-│   ├── services/
-│   ├── models/
-│   ├── rag/
-│   ├── prompts/
-│   ├── utils/
-│   └── main.py
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   └── components/
-│
-├── data/
-│   ├── images/
-│   ├── reports/
-│   └── knowledge_base/
-│
-├── notebooks/
-│
-├── tests/
-│
-├── requirements.txt
-├── .env.example
-├── README.md
-└── LICENSE
-```
-
----
-
 # 🚀 Technology Stack
 
 ### Backend
