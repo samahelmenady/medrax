@@ -1,182 +1,247 @@
-# 🩺 MedRAX – AI-Powered Medical Imaging Analysis & Reporting
+# 🏥 MedRax – AI-Powered Medical Image Analysis
 
-MedRAX is an AI-powered medical imaging analysis platform that assists healthcare professionals by analyzing medical images and generating structured clinical reports using state-of-the-art Large Language Models (LLMs) and computer vision models.
-
-The project combines medical image understanding, multimodal AI, Retrieval-Augmented Generation (RAG), and modern web technologies to provide an intelligent assistant for radiology workflows.
-
-> **Disclaimer:** MedRAX is intended for educational, research, and decision-support purposes only. It is **not** a replacement for professional medical diagnosis.
+MedRax is an AI-powered medical imaging analysis platform built with **Google MedGemma**, designed to analyze medical images and generate structured clinical reports. The application supports multiple medical image formats, provides different analysis modes, and exports professional reports in Markdown and PDF formats.
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-* 📤 Upload medical images
-* 🤖 AI-powered image analysis
-* 📝 Automatic medical report generation
-* 💬 Intelligent medical chatbot
-* 🔍 Retrieval-Augmented Generation (RAG)
-* 📚 Medical knowledge retrieval
-* 🧠 Large Language Model integration
-* 🌐 Modern responsive web interface
-* ⚡ FastAPI backend
-* ☁️ Cloud-ready deployment
+- Upload medical images (JPEG, PNG, DICOM)
+- AI-powered image analysis using **Google MedGemma**
+- Multiple analysis modes:
+  - General Analysis
+  - Findings
+  - Differential Diagnosis
+  - Formal Radiology Report
+  - Comparison Analysis
+  - Patient-Friendly Explanation
+- Automatic image preprocessing
+- Structured medical report generation
+- Export reports as Markdown and PDF
+- Optional Google Cloud Storage integration
+- Interactive web interface built with Gradio
 
 ---
 
-# 🏗️ Project Architecture
+# Project Architecture
 
-```text
-                Medical Image
-                      │
-                      ▼
-             Image Processing Layer
-                      │
-                      ▼
-         Vision / Multimodal AI Model
-                      │
-                      ▼
-            Clinical Findings Extraction
-                      │
-                      ▼
-              RAG Knowledge Retrieval
-                      │
-                      ▼
-            Large Language Model (LLM)
-                      │
-                      ▼
-      Structured Radiology Report + Chat
+```
+User
+   │
+   ▼
+Gradio UI (interface.py)
+   │
+   ├── Upload Image
+   ├── Choose Analysis Type
+   ├── Write Query
+   │
+   ▼
+ImageLoader
+   │
+   ├── Validate file
+   ├── Read PNG/JPG/DICOM
+   └── Return PIL Image
+   │
+   ▼
+prepare_image_for_model()
+   │
+   ├── Verify image
+   ├── Convert RGB
+   └── Resize
+   │
+   ▼
+InferenceService
+   │
+   ├── Build Prompt
+   ├── Add System Prompt
+   ├── Add Image
+   ├── Add User Query
+   │
+   ▼
+ModelManager
+   │
+   ├── Load MedGemma (once)
+   ├── Load Processor
+   └── Generate Response
+   │
+   ▼
+InferenceService
+   │
+   ├── Decode Output
+   ├── Clean Text
+   └── Return Raw Analysis
+   │
+   ▼
+ReportGenerator
+   │
+   ├── Parse Sections
+   ├── Add Metadata
+   ├── Generate Markdown
+   ├── Save Report
+   ├── Export PDF
+   └── Upload to GCS (optional)
+   │
+   ▼
+Gradio UI
+   │
+   ├── Display Report
+   ├── Download MD
+   └── Download PDF
 ```
 
 ---
 
-# 🚀 Technology Stack
+# Project Structure
 
-### Backend
-
-* Python 3.11+
-* FastAPI
-* Uvicorn
-
-### AI & Machine Learning
-
-* Hugging Face Transformers
-* Vision-Language Models (VLMs)
-* OpenAI / Gemini compatible APIs
-* LangChain
-* Sentence Transformers
-
-### Retrieval
-
-* FAISS
-* RAG Pipeline
-* Embedding Models
-
-### Frontend
-
-* React
-* TypeScript
-* Tailwind CSS
-
-### Database & Storage
-
-* SQLite / PostgreSQL
-* Local Storage
-* Cloud Storage
-
-### Deployment
-
-* Docker
-* Google Cloud Platform
-* Cloud Run
-
----
-
-# ⚙️ Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/samahelmenady/medrax.git
-cd medrax
 ```
+medrax/
+├── .dockerignore
+├── .gitignore
+├── .python-version
+├── .env
+├── Dockerfile
+├── README.md
+├── app.py
+├── config.py
+├── deploy.sh
+├── requirements.txt
+│
+├── assets/                 
+│
+├── data/                   
+│   ├── uploads/
+│   └── reports/
+│
+├── models/
+│   ├── __init__.py
+│   └── report_generator.py
+│
+├── services/
+│   ├── __init__.py
+│   ├── image_loader.py
+│   ├── inference.py
+│   └── model_manager.py
+│
+├── ui/
+│   ├── __init__.py
+│   └── interface.py
+│
+└── utils/
+    ├── __init__.py
+    ├── image.py
+    └── logger.py
 
-Create a virtual environment:
-
-```bash
-conda create -n medrax python=3.11
-conda activate medrax
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Create your environment file:
-
-```bash
-cp .env.example .env
-```
-
-Add your API keys inside `.env`.
-
----
-
-# ▶️ Running the Project
-
-Start the backend:
-
-```bash
-uvicorn backend.main:app --reload
-```
-
-Start the frontend:
-
-```bash
-npm install
-npm run dev
 ```
 
 ---
 
-# 🧠 AI Workflow
+# Workflow
 
-1. User uploads a medical image.
-2. The vision model extracts visual findings.
-3. Relevant medical knowledge is retrieved through RAG.
-4. The LLM combines image findings with retrieved knowledge.
-5. A structured radiology report is generated.
-6. Users can ask follow-up questions through the AI assistant.
-
----
-
-# 📋 Generated Report Includes
-
-* Examination Type
-* Clinical Findings
-* Impression
-* Possible Differential Diagnoses
-* Recommendations
-* Follow-up Suggestions
+1. Upload a medical image.
+2. Select an analysis type.
+3. Enter a clinical question (optional).
+4. The image is validated and preprocessed.
+5. MedGemma performs multimodal analysis.
+6. The AI response is converted into a structured report.
+7. The report is displayed and can be downloaded as Markdown or PDF.
 
 ---
 
-# 🤝 Contributing
+# Supported Image Formats
 
-Contributions are welcome!
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Commit your changes.
-4. Open a Pull Request.
+- JPEG
+- PNG
+- DICOM (.dcm)
 
 ---
 
-# 👨‍💻 Author
+# Analysis Types
 
-Developed as an AI-powered medical imaging assistant project using modern Generative AI, Computer Vision, and Retrieval-Augmented Generation technologies.
+| Analysis | Description |
+|----------|-------------|
+| General | Overall image analysis |
+| Findings | Lists important findings |
+| Differential | Suggests possible diagnoses |
+| Report | Generates a formal radiology report |
+| Comparison | Highlights findings for follow-up comparison |
+| Patient Friendly | Explains results in simple language |
 
 ---
 
-## ⭐ If you find this project useful, consider giving it a star on GitHub!
+# Technologies Used
+
+- Python
+- Gradio
+- PyTorch
+- Hugging Face Transformers
+- Google MedGemma
+- Pillow (PIL)
+- NumPy
+- pydicom
+- FPDF2
+- Google Cloud Storage (Optional)
+
+---
+
+# Main Components
+
+## UI Layer
+Provides the Gradio web interface for image upload, analysis settings, and report visualization.
+
+## Image Loader
+Loads, validates, and processes JPEG, PNG, and DICOM images.
+
+## Image Utilities
+Converts images to RGB, validates dimensions, and resizes images before inference.
+
+## Model Manager
+Loads and manages the MedGemma model using the Singleton pattern.
+
+## Inference Service
+Builds multimodal prompts, runs MedGemma inference, and decodes model outputs.
+
+## Report Generator
+Transforms raw AI responses into structured medical reports and exports them as Markdown or PDF.
+
+---
+
+# Output
+
+The generated report contains:
+
+- Report Information
+- Clinical Query
+- Medical Findings
+- Impression / Analysis
+- AI Disclaimer
+
+Reports can be exported as:
+
+- Markdown (.md)
+- PDF (.pdf)
+
+---
+
+# Future Improvements
+
+- Multi-image comparison
+- Medical image segmentation
+- Patient history integration
+- Voice input
+- Electronic Health Record (EHR) integration
+- User authentication
+- Report history dashboard
+
+---
+
+# Disclaimer
+
+This application is intended for **educational and research purposes only**.
+
+It is **not** a substitute for professional medical diagnosis, treatment, or clinical decision-making. Always consult a qualified healthcare professional for medical advice.
+
+---
+
+# Author
+
+Developed as an AI-powered medical imaging analysis system using **Google MedGemma** and **Gradio**.
